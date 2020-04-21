@@ -1,0 +1,35 @@
+/* regole generali */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* regole header */
+header {
+  background-color: black;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 60px;
+  padding: 0px 20px;
+}
+
+header h1 {
+  color: red;
+}
+
+
+/* sezione film */
+main {
+  background-color: grey;
+  height: calc(100vh - 60px);
+  overflow: auto;
+  /* debug */
+  padding: 20px;
+}
+
+.risultato-ricerca ul {
+  /* debug */
+  padding-bottom: 20px;
+}
