@@ -31,18 +31,37 @@ $(document).ready(function(){
         query: valoreInput
       },
       success: function(risultato,stato){
-        // salvo in una variabile i film
+        // salvo in una variabile l'array di film
         var films = risultato.results;
+
+
 
         //ciclo i film ed estrapolo ciò che mi serve per la stampa in pagina
         for (var i = 0; i < films.length; i++) {
           var singoloFilm= films[i];
 
+          // salvo in una variabile il voto di ogni film, trasformandolo da 1 a 5 e arrotondando per eccesso
+          var voto = singoloFilm.vote_average;
+          var votoNoDec = parseInt(voto / 2);
+
+          // devo stampare un numero di stelle che va da 1 a 5 e colorare solo quelle corrispondenti al voto dato
+
+          // stampo una bandiera al posto della Lingua
+          var bandiera = singoloFilm.original_language;
+          if(singoloFilm.original_language == "it"){
+            bandiera = '<img src="img/it.svg" alt="it">';
+            console.log(bandiera);
+          }
+          if(singoloFilm.original_language == "en"){
+            bandiera = '<img src="img/en.svg" alt="en">';
+            console.log(bandiera);
+          }
+
           var context = {
             "titolo": singoloFilm.title,
             "titoloOriginale": singoloFilm.original_title,
-            "lingua": singoloFilm.original_language,
-            "voto": singoloFilm.vote_average,
+            "lingua": bandiera,
+            "voto": votoNoDec,
             "tipo": "Film"
           };
           var html = template(context);
@@ -58,7 +77,7 @@ $(document).ready(function(){
 
     });
 
-    // Allarghiamo poi la ricerca anche alle serie tv. Con la stessa azione di ricerca dovremo prendere sia i film che corrispondono alla query, sia le serie tv, stando attenti ad avere alla fine dei valori simili (le serie e i film hanno campi nel JSON di risposta diversi, simili ma non sempre identici)
+    // Allargo la ricerca anche alle serie tv
     $.ajax({
       url: "https://api.themoviedb.org/3/search/tv",
       method: "GET",
@@ -69,22 +88,37 @@ $(document).ready(function(){
         query: valoreInput
       },
       success: function(risultato,stato){
-        // salvo in una variabile i film
+        // salvo in una variabile l'array di serie
         var serie = risultato.results;
 
-        //ciclo i film ed estrapolo ciò che mi serve per la stampa in pagina
+        //ciclo le serie ed estrapolo ciò che mi serve per la stampa in pagina
         for (var i = 0; i < serie.length; i++) {
           var singolaSerie= serie[i];
+
+          // salvo in una variabile il voto di ogni serie, trasformandolo da 1 a 5 e arrotondando per eccesso
+          var voto = singolaSerie.vote_average;
+          var votoNoDec = parseInt(voto / 2);
+
+          // stampo una bandiera al posto della Lingua
+          var bandiera = singoloFilm.original_language;
+          if(singoloFilm.original_language == "it"){
+            bandiera = '<img src="img/it.svg" alt="it">';
+            console.log(bandiera);
+          }
+          if(singoloFilm.original_language == "en"){
+            bandiera = '<img src="img/en.svg" alt="en">';
+            console.log(bandiera);
+          }
 
           var context = {
             "titolo": singolaSerie.name,
             "titoloOriginale": singolaSerie.original_name,
             "lingua": singolaSerie.original_language,
-            "voto": singolaSerie.vote_average,
+            "voto": votoNoDec,
             "tipo": "Serie tv"
           };
           var html = template(context);
-          // stampo in pagina i film
+          // stampo in pagina le serie
           $('.risultato-ricerca').append(html);
 
         };

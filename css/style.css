@@ -33,3 +33,8 @@ main {
   /* debug */
   padding-bottom: 20px;
 }
+
+.risultato-ricerca img {
+  width: 20px;
+  height: auto;
+}
