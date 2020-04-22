@@ -100,12 +100,12 @@ $(document).ready(function(){
           var votoNoDec = parseInt(voto / 2);
 
           // stampo una bandiera al posto della Lingua
-          var bandiera = singoloFilm.original_language;
-          if(singoloFilm.original_language == "it"){
+          var bandiera = singolaSerie.original_language;
+          if(singolaSerie.original_language == "it"){
             bandiera = '<img src="img/it.svg" alt="it">';
             console.log(bandiera);
           }
-          if(singoloFilm.original_language == "en"){
+          if(singolaSerie.original_language == "en"){
             bandiera = '<img src="img/en.svg" alt="en">';
             console.log(bandiera);
           }
@@ -113,7 +113,7 @@ $(document).ready(function(){
           var context = {
             "titolo": singolaSerie.name,
             "titoloOriginale": singolaSerie.original_name,
-            "lingua": singolaSerie.original_language,
+            "lingua": bandiera,
             "voto": votoNoDec,
             "tipo": "Serie tv"
           };
