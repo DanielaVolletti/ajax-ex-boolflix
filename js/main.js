@@ -34,8 +34,6 @@ $(document).ready(function(){
         // salvo in una variabile l'array di film
         var films = risultato.results;
 
-
-
         //ciclo i film ed estrapolo ciò che mi serve per la stampa in pagina
         for (var i = 0; i < films.length; i++) {
           var singoloFilm= films[i];
@@ -44,7 +42,15 @@ $(document).ready(function(){
           var voto = singoloFilm.vote_average;
           var votoNoDec = parseInt(voto / 2);
 
-          // devo stampare un numero di stelle che va da 1 a 5 e colorare solo quelle corrispondenti al voto dato
+          // creo 5 stelle che riempio a seconda che del voto corrispondente
+          var stelle = "";
+          for(var j = 1; j <= 5; j++) {
+            if(j <= votoNoDec) {
+              stelle += '<img src="img/starpiena.svg" alt="">';
+            } else {
+              stelle += '<img src="img/star.svg" alt="">';
+            }
+          };
 
           // stampo una bandiera al posto della Lingua
           var bandiera = singoloFilm.original_language;
@@ -61,7 +67,7 @@ $(document).ready(function(){
             "titolo": singoloFilm.title,
             "titoloOriginale": singoloFilm.original_title,
             "lingua": bandiera,
-            "voto": votoNoDec,
+            "voto": stelle,
             "tipo": "Film"
           };
           var html = template(context);
@@ -99,6 +105,16 @@ $(document).ready(function(){
           var voto = singolaSerie.vote_average;
           var votoNoDec = parseInt(voto / 2);
 
+          // creo 5 stelle che riempio a seconda che del voto corrispondente
+          var stelle = "";
+          for(var j = 1; j <= 5; j++) {
+            if(j <= votoNoDec) {
+              stelle += '<img src="img/starpiena.svg" alt="">';
+            } else {
+              stelle += '<img src="img/star.svg" alt="">';
+            }
+          };
+
           // stampo una bandiera al posto della Lingua
           var bandiera = singolaSerie.original_language;
           if(singolaSerie.original_language == "it"){
@@ -114,7 +130,7 @@ $(document).ready(function(){
             "titolo": singolaSerie.name,
             "titoloOriginale": singolaSerie.original_name,
             "lingua": bandiera,
-            "voto": votoNoDec,
+            "voto": stelle,
             "tipo": "Serie tv"
           };
           var html = template(context);
