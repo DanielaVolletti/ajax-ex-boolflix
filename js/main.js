@@ -8,13 +8,17 @@
 
 $(document).ready(function(){
 
+  // variabili per handlebars
+  var source = $('#film-template').html();
+  var template = Handlebars.compile(source);
+
   // evento click sul bottone di ricerca
   $('.sezione-ricerca button').click(function () {
-    
+
     // pulisco la sezione in cui appaiono i film
     var containerRicerca = $('.risultato-ricerca').html("");
     // salvo la ricerca dell'utente e normalizzo i caratteri
-    var valoreInput = $('.sezione-ricerca input').val().toLowerCase();
+    var valoreInput = $('.sezione-ricerca input').val();
 
     // chiamata ajax per trovare i film e stamparli in pagina con handlebars
     $.ajax({
@@ -29,25 +33,21 @@ $(document).ready(function(){
       success: function(risultato,stato){
         // salvo in una variabile i film
         var films = risultato.results;
-        // variabili per handlebars
-        var source = $('#film-template').html();
-        var template = Handlebars.compile(source);
+
         //ciclo i film ed estrapolo ciò che mi serve per la stampa in pagina
         for (var i = 0; i < films.length; i++) {
           var singoloFilm= films[i];
-          console.log(singoloFilm.title);
-          var titoloFilm = singoloFilm.title.toLowerCase();
-          if (titoloFilm.includes(valoreInput)) {
-            var context = {
-              "titolo": "Titolo: " + singoloFilm.title,
-              "titoloOriginale": "Titolo originale: " + singoloFilm.original_title,
-              "lingua": "Lingua: " + singoloFilm.original_language,
-              "voto": "Voto: " + singoloFilm.vote_average
-            };
-            var html = template(context);
-            // stampo in pagina i film
-            $('.risultato-ricerca').append(html);
-          }
+
+          var context = {
+            "titolo": singoloFilm.title,
+            "titoloOriginale": singoloFilm.original_title,
+            "lingua": singoloFilm.original_language,
+            "voto": singoloFilm.vote_average
+          };
+          var html = template(context);
+          // stampo in pagina i film
+          $('.risultato-ricerca').append(html);
+
         };
 
       },
