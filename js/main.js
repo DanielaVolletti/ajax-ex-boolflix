@@ -53,15 +53,12 @@ $(document).ready(function(){
           };
 
           // stampo una bandiera al posto della Lingua
-          var bandiera = singoloFilm.original_language;
-          if(singoloFilm.original_language == "it"){
-            bandiera = '<img src="img/it.svg" alt="it">';
-            console.log(bandiera);
-          }
-          if(singoloFilm.original_language == "en"){
-            bandiera = '<img src="img/en.svg" alt="en">';
-            console.log(bandiera);
-          }
+          var arrayLingue = ["it", "en"];
+          if(arrayLingue.includes(singoloFilm.original_language)){
+            var bandiera = '<img src="img/' + singoloFilm.original_language + '.svg" alt="it">';
+          } else {
+            bandiera = singoloFilm.original_language;
+          };
 
           var context = {
             "titolo": singoloFilm.title,
@@ -116,15 +113,12 @@ $(document).ready(function(){
           };
 
           // stampo una bandiera al posto della Lingua
-          var bandiera = singolaSerie.original_language;
-          if(singolaSerie.original_language == "it"){
-            bandiera = '<img src="img/it.svg" alt="it">';
-            console.log(bandiera);
-          }
-          if(singolaSerie.original_language == "en"){
-            bandiera = '<img src="img/en.svg" alt="en">';
-            console.log(bandiera);
-          }
+          var arrayLingue = ["it", "en"];
+          if(arrayLingue.includes(singolaSerie.original_language)){
+            var bandiera = '<img src="img/' + singolaSerie.original_language + '.svg" alt="it">';
+          } else {
+            bandiera = singolaSerie.original_language;
+          };
 
           var context = {
             "titolo": singolaSerie.name,
