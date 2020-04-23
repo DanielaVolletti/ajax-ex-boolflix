@@ -33,7 +33,11 @@ main {
   padding-bottom: 20px;
 }
 
-.risultato-ricerca img {
+.info-film li {
+  list-style-type: none;
+}
+
+.stella, .bandiera {
   width: 20px;
   height: auto;
 }

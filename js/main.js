@@ -1,9 +1,3 @@
-// Creare un layout base con una searchbar (una input e un button) in cui possiamo scrivere completamente o parzialmente il nome di un film. Possiamo, cliccando il  bottone, cercare sull’API tutti i film che contengono ciò che ha scritto l’utente.
-// Vogliamo dopo la risposta dell’API visualizzare a schermo i seguenti valori per ogni film trovato:
-// Titolo
-// Titolo Originale
-// Lingua
-// Voto
 
 
 $(document).ready(function(){
@@ -32,47 +26,9 @@ $(document).ready(function(){
       },
       success: function(risultato,stato){
         // salvo in una variabile l'array di film
-        var films = risultato.results;
-
-        //ciclo i film ed estrapolo ciò che mi serve per la stampa in pagina
-        for (var i = 0; i < films.length; i++) {
-          var singoloFilm= films[i];
-
-          // salvo in una variabile il voto di ogni film, trasformandolo da 1 a 5 e arrotondando per eccesso
-          var voto = singoloFilm.vote_average;
-          var votoNoDec = parseInt(voto / 2);
-
-          // creo 5 stelle che riempio a seconda che del voto corrispondente
-          var stelle = "";
-          for(var j = 1; j <= 5; j++) {
-            if(j <= votoNoDec) {
-              stelle += '<img src="img/starpiena.svg" alt="">';
-            } else {
-              stelle += '<img src="img/star.svg" alt="">';
-            }
-          };
-
-          // stampo una bandiera al posto della Lingua
-          var arrayLingue = ["it", "en"];
-          if(arrayLingue.includes(singoloFilm.original_language)){
-            var bandiera = '<img src="img/' + singoloFilm.original_language + '.svg" alt="it">';
-          } else {
-            bandiera = singoloFilm.original_language;
-          };
-
-          var context = {
-            "titolo": singoloFilm.title,
-            "titoloOriginale": singoloFilm.original_title,
-            "lingua": bandiera,
-            "voto": stelle,
-            "tipo": "Film"
-          };
-          var html = template(context);
-          // stampo in pagina i film
-          $('.risultato-ricerca').append(html);
-
-        };
-
+        var listaFilm = risultato.results;
+        // faccio partire la funzione per generare l'output
+        generaOutput(listaFilm, "Film");
       },
       error: function(richiesta,stato,errore){
         alert("Chiamata fallita!!!");
@@ -92,46 +48,9 @@ $(document).ready(function(){
       },
       success: function(risultato,stato){
         // salvo in una variabile l'array di serie
-        var serie = risultato.results;
-
-        //ciclo le serie ed estrapolo ciò che mi serve per la stampa in pagina
-        for (var i = 0; i < serie.length; i++) {
-          var singolaSerie= serie[i];
-
-          // salvo in una variabile il voto di ogni serie, trasformandolo da 1 a 5 e arrotondando per eccesso
-          var voto = singolaSerie.vote_average;
-          var votoNoDec = parseInt(voto / 2);
-
-          // creo 5 stelle che riempio a seconda che del voto corrispondente
-          var stelle = "";
-          for(var j = 1; j <= 5; j++) {
-            if(j <= votoNoDec) {
-              stelle += '<img src="img/starpiena.svg" alt="">';
-            } else {
-              stelle += '<img src="img/star.svg" alt="">';
-            }
-          };
-
-          // stampo una bandiera al posto della Lingua
-          var arrayLingue = ["it", "en"];
-          if(arrayLingue.includes(singolaSerie.original_language)){
-            var bandiera = '<img src="img/' + singolaSerie.original_language + '.svg" alt="it">';
-          } else {
-            bandiera = singolaSerie.original_language;
-          };
-
-          var context = {
-            "titolo": singolaSerie.name,
-            "titoloOriginale": singolaSerie.original_name,
-            "lingua": bandiera,
-            "voto": stelle,
-            "tipo": "Serie tv"
-          };
-          var html = template(context);
-          // stampo in pagina le serie
-          $('.risultato-ricerca').append(html);
-
-        };
+        var listaFilm = risultato.results;
+        // faccio partire la funzione per generare l'output
+        generaOutput(listaFilm, "Serie tv");
 
       },
       error: function(richiesta,stato,errore){
@@ -141,8 +60,88 @@ $(document).ready(function(){
     });
 
 
-  })
+  });
 
+  // FUNZIONI
+
+  // Funzione per generare output in pagina
+  function generaOutput(array, tipo) {
+
+    //ciclo i film ed estrapolo ciò che mi serve per la stampa in pagina
+    for (var i = 0; i < array.length; i++) {
+      var singoloItem= array[i];
+
+      // inizializzo variabili titolo e titolo originale
+      var title, originalTitle;
+
+      // a seconda che sia film o serie tv: titolo e titolo originale
+      if(tipo === "Film"){
+        title = singoloItem.title;
+        originalTitle = singoloItem.original_title;
+      } else if(tipo === "Serie tv"){
+        title = singoloItem.name;
+        originalTitle = singoloItem.original_name;
+      };
+
+      // inserisco i valori che dovranno essere inseriti su html
+      var context = {
+        "titolo": title,
+        "titoloOriginale": originalTitle,
+        "lingua": generaBandiera(singoloItem.original_language),
+        "voto": votoStelle(singoloItem.vote_average),
+        "tipo": tipo,
+        "poster": generaPoster(singoloItem.poster_path)
+      };
+      var html = template(context);
+      // stampo in pagina i film
+      $('.risultato-ricerca').append(html);
+
+    };
+
+
+  }
+
+
+  // Funzione per generare voto con stelle
+  function votoStelle(voto) {
+    // cambio voto da 1 a 5
+    var voto = parseInt(voto / 2);
+    // creo 5 stelle che riempio a seconda che del voto corrispondente
+    var stelle = "";
+    for(var j = 1; j <= 5; j++) {
+      if(j <= voto) {
+        stelle += '<img class="stella" src="img/starpiena.svg" alt="">';
+      } else {
+        stelle += '<img class="stella" src="img/star.svg" alt="">';
+      }
+    }
+    return stelle;
+  };
+
+
+  // Funzione genera bandiere al posto della Lingua
+  function generaBandiera(lingua) {
+    // stampo una bandiera al posto della Lingua
+    var imgBandiere = ["it", "en"];
+    var bandiera;
+    if(imgBandiere.includes(lingua)){
+      bandiera = '<img class="bandiera" src="img/' + lingua + '.svg" alt="it">';
+    } else {
+      bandiera = lingua;
+    }
+    return bandiera;
+  };
+
+  // Funzione genera poster
+  function generaPoster(poster) {
+    var copertinaFilm;
+    if(poster) {
+      copertinaFilm = '<img src="https://image.tmdb.org/t/p/w342' + poster + '">';
+    } else {
+      copertinaFilm = "";
+    }
+    return copertinaFilm;
+  };
 
 
 
