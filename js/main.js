@@ -110,9 +110,9 @@ $(document).ready(function(){
     var stelle = "";
     for(var j = 1; j <= 5; j++) {
       if(j <= voto) {
-        stelle += '<img class="stella" src="img/starpiena.svg" alt="">';
+        stelle += '<i class="fas fa-star piena"></i>';
       } else {
-        stelle += '<img class="stella" src="img/star.svg" alt="">';
+        stelle += '<i class="far fa-star vuota"></i>';
       }
     }
     return stelle;
