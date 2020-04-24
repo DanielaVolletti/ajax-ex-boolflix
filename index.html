@@ -25,17 +25,21 @@
 
     </main>
 
-
     <!-- template handlebars -->
     <script id="film-template" type="text/x-handlebars-template">
-      <div class="">{{{poster}}}</div>
-      <ul class="info-film">
-        <li>Titolo: {{titolo}}</li>
-        <li>Titolo originale: {{titoloOriginale}}</li>
-        <li>Lingua: <span class="lingua">{{{lingua}}}</span></li>
-        <li>Voto: <span class="voto">{{{voto}}}</span></li>
-        <li>Tipo: {{tipo}}</li>
-      </ul>
+      <div class="blocco-film">
+        <div class="poster">{{{poster}}}
+          <span class="tipo">{{tipo}}</span>
+        </div>
+        <ul class="info-film">
+          <li><b>Titolo: </b>{{titolo}}</li>
+          <li><b>Titolo originale: </b>{{titoloOriginale}}</li>
+          <li><b>Lingua: </b><span class="lingua">{{{lingua}}}</span></li>
+          <li><b>Voto: </b><span class="voto">{{{voto}}}</span></li>
+          <li><span>{{{trama}}}</span></li>
+
+        </ul>
+      </div>
     </script>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>

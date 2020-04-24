@@ -24,20 +24,89 @@ main {
   background-color: grey;
   height: calc(100vh - 60px);
   overflow: auto;
-  /* debug */
   padding: 20px;
 }
 
-.risultato-ricerca ul {
-  /* debug */
-  padding-bottom: 20px;
+/* contenitore tutti i film */
+.risultato-ricerca {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+/* contenitore singolo film */
+.blocco-film {
+  flex-basis: calc(100% / 4);
+  position: relative;
+  margin-bottom: 20px;
+  cursor: pointer;
+}
+
+/* copertina film */
+.poster {
+  position: relative;
+  width: 340px;
+  height: 500px;
+  border: solid 1px white;
+}
+
+.poster img{
+  width: 100%;
+  height: 100%;
+}
+
+.no-copertina {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.tipo {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: red;
+  text-align: center;
+  line-height: 22px;
+  color: white;
+}
+
+/* info film */
+.info-film {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 340px;
+  height: 500px;
+  background: black;
+  color: white;
+  padding: 20px;
+  font-size: 18px;
+  border: solid 1px white;
 }
 
 .info-film li {
   list-style-type: none;
 }
 
-.stella, .bandiera {
-  width: 20px;
+.bandiera {
+  width: 25px;
   height: auto;
+}
+
+.piena {
+  color: yellow;
+}
+
+.vuota {
+  color: white;
+}
+
+/* per rendere attive le info del film con l'hover sulla copertina */
+.active {
+  display: inline-block;
 }

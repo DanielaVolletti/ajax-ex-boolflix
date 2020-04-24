@@ -1,5 +1,3 @@
-
-
 $(document).ready(function(){
 
   // variabili per handlebars
@@ -14,55 +12,39 @@ $(document).ready(function(){
     // salvo la ricerca dell'utente e normalizzo i caratteri
     var valoreInput = $('.sezione-ricerca input').val();
 
-    // chiamata ajax per trovare i film e stamparli in pagina con handlebars
+    // chiamata ajax per film
+    chiamataAjax("https://api.themoviedb.org/3/search/movie", "d038cec7530a2aa194a0bd6917afb94d", "it-IT", valoreInput, "Film");
+
+    // chiamata ajax per Serie
+    chiamataAjax("https://api.themoviedb.org/3/search/tv", "d038cec7530a2aa194a0bd6917afb94d", "it-IT", valoreInput, "Serie tv");
+
+  });
+
+
+  // FUNZIONI
+
+  // funzione per generare chiamata ajax
+  function chiamataAjax(url, apiKey, lingua, query, tipologia) {
     $.ajax({
-      url: "https://api.themoviedb.org/3/search/movie",
+      url: url,
       method: "GET",
       data: {
-        api_key: "d038cec7530a2aa194a0bd6917afb94d",
+        api_key: apiKey,
         dataType: "json",
-        language: "it-IT",
-        query: valoreInput
-      },
-      success: function(risultato,stato){
-        // salvo in una variabile l'array di film
-        var listaFilm = risultato.results;
-        // faccio partire la funzione per generare l'output
-        generaOutput(listaFilm, "Film");
-      },
-      error: function(richiesta,stato,errore){
-        alert("Chiamata fallita!!!");
-      }
-
-    });
-
-    // Allargo la ricerca anche alle serie tv
-    $.ajax({
-      url: "https://api.themoviedb.org/3/search/tv",
-      method: "GET",
-      data: {
-        api_key: "d038cec7530a2aa194a0bd6917afb94d",
-        dataType: "json",
-        language: "it-IT",
-        query: valoreInput
+        language: lingua,
+        query: query
       },
       success: function(risultato,stato){
         // salvo in una variabile l'array di serie
         var listaFilm = risultato.results;
         // faccio partire la funzione per generare l'output
-        generaOutput(listaFilm, "Serie tv");
-
+        generaOutput(listaFilm, tipologia);
       },
       error: function(richiesta,stato,errore){
         alert("Chiamata fallita!!!");
       }
-
     });
-
-
-  });
-
-  // FUNZIONI
+  };
 
   // Funzione per generare output in pagina
   function generaOutput(array, tipo) {
@@ -90,17 +72,25 @@ $(document).ready(function(){
         "lingua": generaBandiera(singoloItem.original_language),
         "voto": votoStelle(singoloItem.vote_average),
         "tipo": tipo,
-        "poster": generaPoster(singoloItem.poster_path)
+        "poster": generaPoster(singoloItem.poster_path),
+        "trama": overview(singoloItem.overview)
       };
       var html = template(context);
       // stampo in pagina i film
       $('.risultato-ricerca').append(html);
 
+      // hover su poster fa apparire le specifiche del film
+      $('.blocco-film').on({
+        mouseenter: function () {
+          $(this).children('.info-film').addClass('active');
+        }, mouseleave: function (){
+          $(this).children('.info-film').removeClass('active');
+        }
+      });
+
     };
 
-
-  }
-
+  };
 
   // Funzione per generare voto con stelle
   function votoStelle(voto) {
@@ -117,7 +107,6 @@ $(document).ready(function(){
     }
     return stelle;
   };
-
 
   // Funzione genera bandiere al posto della Lingua
   function generaBandiera(lingua) {
@@ -138,12 +127,20 @@ $(document).ready(function(){
     if(poster) {
       copertinaFilm = '<img src="https://image.tmdb.org/t/p/w342' + poster + '">';
     } else {
-      copertinaFilm = "";
+      copertinaFilm = '<div class="no-copertina">Poster non disponibile</div>' ;
     }
     return copertinaFilm;
   };
 
-
-
+  // Funzione genera overview
+  function overview(overview) {
+    var trama;
+    if(overview){
+      trama = '<b>Overview: </b>' + overview;
+    } else {
+      trama = "";
+    }
+    return trama;
+  };
 
 })
