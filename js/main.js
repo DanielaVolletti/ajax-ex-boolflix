@@ -72,7 +72,7 @@ $(document).ready(function(){
         "lingua": generaBandiera(singoloItem.original_language),
         "voto": votoStelle(singoloItem.vote_average),
         "tipo": tipo,
-        "poster": generaPoster(singoloItem.poster_path),
+        "poster": generaPoster(singoloItem.poster_path, title),
         "trama": overview(singoloItem.overview)
       };
       var html = template(context);
@@ -122,12 +122,12 @@ $(document).ready(function(){
   };
 
   // Funzione genera poster
-  function generaPoster(poster) {
+  function generaPoster(poster, titolo) {
     var copertinaFilm;
     if(poster) {
       copertinaFilm = '<img src="https://image.tmdb.org/t/p/w342' + poster + '">';
     } else {
-      copertinaFilm = '<div class="no-copertina">Poster non disponibile</div>' ;
+      copertinaFilm = '<div class="no-copertina">' + titolo + '</div>' ;
     }
     return copertinaFilm;
   };
@@ -136,7 +136,7 @@ $(document).ready(function(){
   function overview(overview) {
     var trama;
     if(overview){
-      trama = '<b>Overview: </b>' + overview;
+      trama = '<b>Overview: </b>' + overview + '[...]';
     } else {
       trama = "";
     }

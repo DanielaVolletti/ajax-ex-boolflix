@@ -61,6 +61,7 @@ main {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  color: white;
 }
 
 .tipo {
@@ -104,6 +105,11 @@ main {
 
 .vuota {
   color: white;
+}
+
+.anteprima-trama {
+  max-height: 50%;
+  overflow-y: hidden;
 }
 
 /* per rendere attive le info del film con l'hover sulla copertina */
