@@ -65,6 +65,12 @@ $(document).ready(function(){
         originalTitle = singoloItem.original_name;
       };
 
+      // creo un limite di anteprima della trama del film
+      var tramaCompleta = singoloItem.overview;
+      var arrayword = tramaCompleta.split(' ');
+      var testoTagliato = arrayword.slice(0, 30);
+      var tramaTagliata = testoTagliato.join(' ');
+
       // inserisco i valori che dovranno essere inseriti su html
       var context = {
         "titolo": title,
@@ -73,7 +79,7 @@ $(document).ready(function(){
         "voto": votoStelle(singoloItem.vote_average),
         "tipo": tipo,
         "poster": generaPoster(singoloItem.poster_path, title),
-        "trama": overview(singoloItem.overview)
+        "trama": overview(tramaTagliata)
       };
       var html = template(context);
       // stampo in pagina i film

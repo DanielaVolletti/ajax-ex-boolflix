@@ -107,11 +107,6 @@ main {
   color: white;
 }
 
-.anteprima-trama {
-  max-height: 50%;
-  overflow-y: hidden;
-}
-
 /* per rendere attive le info del film con l'hover sulla copertina */
 .active {
   display: inline-block;
